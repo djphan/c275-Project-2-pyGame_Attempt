@@ -45,6 +45,14 @@ OUTLINE_COLOR = (50, 50, 50)
 BUTTON_HIGHLIGHT_COLOR = (255, 255, 255)
 BUTTON_DISABLED_COLOR = (64, 64, 64)
 
+pygame.init()
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+#GUI Image File Maps 
+TEST1 = ImageLabel ("asset/menu/check_inv.png")
+TEST2 = ImageLabel ("asset/menu/fall.gif")
+TEST3 = ImageLabel ("asset/menu/30.png")
+
 
 class GUI:
     def init_draw_window(self, string):
@@ -72,37 +80,74 @@ class GUI:
         keywords: resources, main_menu, input.
 
         Modularity can be accomplished if we used one general frame setting. However to make the GUI
-        look nicer we will be hard coding values for these different frames.
+        look nicer we will be hard coding values for these different frames. A detailed documentation   
+        of the resource menu will be done, as all other menus are modified versions of this.
+    
+        Any unique changes to individual tables will be shown here.
         """
-        table = Table (1,1)
-        table.topleft = 5,5
-        table.spacing = 5
-
         if menu_object == "resources":
-            frame = HFrame (Label ("Resource Summary"))
-            frame.set_boarder = (BORDER_SUNKEN)
-            table.add_child = (1, 1, frame)
+            # Set a table of row, column size to fill in
+            table = Table (2, 2)
+            # Set location based on x,y coordinates from top left - Graphical Notations.
+            table.topleft = 5, 5
+            table.spacing = 5
+        
+            res_frame = HFrame (Label ("Resource Summary"))
+            res_frame.set_boarder = (BORDER_SUNKEN)
+            
+            table.add_child (0, 0, res_frame)
+            res_frame.add_child(TEST1)
+            res_frame.add_child(TEST2)
+            res_frame.add_child(TEST3)
+        
+            return table
+
+        elif menu_object == 'main_menu':
+            mm_table = Table (2, 3)
+
+            # Adjust
+            mm_table.topleft = 1000, 5
+            mm_table.spacing = 5
+            
+            mm_frame = HFrame (Label ("LOL"))
+            mm_frame.set_boarder = (BORDER_SUNKEN)
+                
+            mm_table.add_child (0, 0, mm_frame)
 
             for i in xrange(3):
                 btn = Button ("Button %d" % i)
-                frame.add_child (btn)
-               
-        elif menu_object == 'main_menu':
-            frame.set_boarder = (BORDER_SUNKEN)
-            pass
+                mm_frame.add_child (btn)
+            return mm_table    
+       
         elif menu_object == 'input':
-            frame.set_boarder = (BORDER_SUNKEN)
-            pass
+            inp_table = Table (2, 3)
+            inp_table.topleft = 5, 630
+            inp_table.spacing = 5
+            
+            # Create and display two 'standard' frames.
+            inp_frame = HFrame (Label ("Input"))
+            inp_frame.set_boarder = (BORDER_SUNKEN)
+                
+            inp_table.add_child (0, 0, inp_frame)
+
+            for i in xrange(3):
+                btn = Button ("Button %d" % i)
+                inp_frame.add_child (btn)
+            return inp_table
+
         else:
             # Add/overide for other modules.
             pass
        
-        return table
+
+
 
 main_gui = GUI()
 
 main_menu = main_gui.init_draw_window('Zombie Survival Board Game')
-main_menu.add_widget(main_gui.draw_frame("resources"))
+main_menu.add_widget(main_gui.draw_frame('resources'))
+main_menu.add_widget(main_gui.draw_frame('main_menu'))
+main_menu.add_widget(main_gui.draw_frame('input'))
 #button = Button ('HelloWorld')
 #button.topleft=(100,50)
 #main_menu.add_widget (button)
