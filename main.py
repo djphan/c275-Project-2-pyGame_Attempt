@@ -54,21 +54,3 @@ if __name__ == "__main__":
 
 
 
-# The main game loop
-while 1:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.display.quit()
-            sys.exit()
-        # End if q is pressed
-        elif (event.type == pygame.KEYDOWN and
-        (event.key == pygame.K_q or event.key == pygame.K_ESCAPE)):
-            pygame.display.quit()
-            sys.exit()
-        # Respond to clicks
-        elif event.type == pygame.MOUSEBUTTONUP:
-            main_gui.on_click(event)
-    main_gui.update()
-    main_gui.draw()
-    clock.tick(60)
-

@@ -49,10 +49,10 @@ pygame.init()
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 #GUI Image File Maps 
-TEST1 = ImageLabel ("asset/menu/check_inv.png")
-TEST2 = ImageLabel ("asset/menu/fall.gif")
-TEST3 = ImageLabel ("asset/menu/30.png")
-
+HEALTH = ImageLabel ("asset/menu/health.png")
+PEOPLE = ImageLabel ("asset/menu/person.png")
+FOOD = ImageLabel ("asset/menu/soup.png")
+WEAP = ImageLabel ("asset/menu/gun.png")
 
 class GUI:
     def init_draw_window(self, string):
@@ -96,9 +96,10 @@ class GUI:
             res_frame.set_boarder = (BORDER_SUNKEN)
             
             table.add_child (0, 0, res_frame)
-            res_frame.add_child(TEST1)
-            res_frame.add_child(TEST2)
-            res_frame.add_child(TEST3)
+            res_frame.add_child(HEALTH)
+            res_frame.add_child(PEOPLE)
+            res_frame.add_child(FOOD)
+            res_frame.add_child(WEAP)
         
             return table
 
@@ -121,7 +122,7 @@ class GUI:
        
         elif menu_object == 'input':
             inp_table = Table (2, 3)
-            inp_table.topleft = 5, 630
+            inp_table.topleft = 215, 600
             inp_table.spacing = 5
             
             # Create and display two 'standard' frames.
@@ -135,18 +136,32 @@ class GUI:
                 inp_frame.add_child (btn)
             return inp_table
 
+        elif menu_object == 'minimap':
+            minimap_table = Table (2, 3)
+            minimap_table.topleft = 5, 600
+            minimap_table.spacing = 5
+            
+            # Create and display two 'standard' frames.
+            minimap_frame = HFrame (Label ("Minimap"))
+            minimap_frame.set_boarder = (BORDER_SUNKEN)
+                
+            minimap_table.add_child (0, 0, minimap_frame)
+
+            for i in xrange(3):
+                btn = Button ("Button %d" % i)
+                minimap_frame.add_child (btn)
+            return minimap_table
+
         else:
             # Add/overide for other modules.
             pass
        
-
-
-
 main_gui = GUI()
 
 main_menu = main_gui.init_draw_window('Zombie Survival Board Game')
 main_menu.add_widget(main_gui.draw_frame('resources'))
 main_menu.add_widget(main_gui.draw_frame('main_menu'))
+main_menu.add_widget(main_gui.draw_frame('minimap'))
 main_menu.add_widget(main_gui.draw_frame('input'))
 #button = Button ('HelloWorld')
 #button.topleft=(100,50)
