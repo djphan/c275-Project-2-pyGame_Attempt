@@ -1,24 +1,23 @@
-import sys, pygame
+import sys 
+import pygame, pygame.locals
 import random
 
 # Import various assets and modules for function
 from ocempgui.widgets import *
 from ocempgui.widgets.Constants import *
+from ocempgui.draw import String
+
+
 from sounds import SoundManager
 
 # GUI size information
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 800
 
-MAP_WIDTH = 800
-BAR_WIDTH = 400
-BUTTON_HEIGHT = 50
-CENTER = 100
-
 # Allows for pygame to render images onto the GUI
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
-#GUI Image File Maps 
+# GUI Image File Maps 
 HEALTH = ImageLabel ("asset/menu/health.png")
 PEOPLE = ImageLabel ("asset/menu/person.png")
 FOOD = ImageLabel ("asset/menu/soup.png")
@@ -26,39 +25,30 @@ WEAP = ImageLabel ("asset/menu/gun.png")
 
 #------------
 
-# Set the fonts
+# Set the fonts to render in the GUI
+FEAR_FONT = "asset/menu/FaceYourFears.tft"
 pygame.font.init()
-FONT_SIZE = 16
-BIG_FONT_SIZE = 42
-FONT = pygame.font.SysFont("Arial", FONT_SIZE)
-BIG_FONT = pygame.font.SysFont("Arial", BIG_FONT_SIZE)
-BIG_FONT.set_bold(True)
-
-# padding for left and top side of the bar
-PAD = 6
-
-# Speed of reticle blinking
-RETICLE_RATE = 0.02
-
-# RGBA colors for grid stuff
-SELECT_COLOR = (255, 255, 0, 255)
-UNMOVED_COLOR = (0, 0, 0, 255)
-MOVE_COLOR_A = (0, 0, 160, 120)
-MOVE_COLOR_B = (105, 155, 255, 160)
-ATK_COLOR_A = (255, 0, 0, 140)
-ATK_COLOR_B = (220, 128, 0, 180)
 
 # RGB colors for the GUI
-FONT_COLOR = (0, 0, 0)
-BAR_COLOR = (150, 150, 150)
-OUTLINE_COLOR = (50, 50, 50)
-BUTTON_HIGHLIGHT_COLOR = (255, 255, 255)
-BUTTON_DISABLED_COLOR = (64, 64, 64)
+BASE_COLOUR = (230, 230, 230)
 
 #---------------------------------
 
 
+# Resource Values
+HEALTH_VAL = 10
+PEOPLE_VAL = 1
+FOOD_VAL = 3
+WEAP_VAL = 0
 
+def render_string(string, font, size):
+    """
+    This is a helper function to render strings as an image widget
+    to be processed in the GUI.
+    """
+    text = String.draw_string(string, font, size, 1, (0,0,0))
+    text = ImageLabel(text)
+    return text
 
 class GUI:
     """
@@ -87,14 +77,14 @@ class GUI:
         """
         Initalize the GUI window using OceanGUI modules. This function
         takes in the title of the window as a string, and outputs 
-        the base winow GUI.
+        the base GUI window.
         """
         window = Renderer ()
         # Window size defined globally at the start of the map
         window.create_screen (WINDOW_WIDTH, WINDOW_HEIGHT)
         window.title = string
         # The GUI color is determined by RGB values
-        window.color = (230, 230, 230)
+        window.color = BASE_COLOUR
         return window
 
     def draw_frame(self, menu_object):
@@ -120,14 +110,24 @@ class GUI:
             table.topleft = 5, 5
             table.spacing = 5
         
+            # Creates and sets the border
             res_frame = HFrame (Label ("Resource Summary"))
-            res_frame.set_boarder = (BORDER_SUNKEN)
-            
             table.add_child (0, 0, res_frame)
+
+            # Add Graphical Components
             res_frame.add_child(HEALTH)
+            # Pads text so updates to values keep the same positions
+            text = render_string(": " + str(HEALTH_VAL).ljust(3, ' ') + " ", FEAR_FONT, 30)
+            res_frame.add_child(text)
             res_frame.add_child(PEOPLE)
+            text = render_string(": " + str(PEOPLE_VAL).ljust(3, ' ') + " ", FEAR_FONT, 30)
+            res_frame.add_child(text)
             res_frame.add_child(FOOD)
+            text = render_string(": " + str(FOOD_VAL).ljust(3, ' ') + " ", FEAR_FONT, 30)
+            res_frame.add_child(text)
             res_frame.add_child(WEAP)
+            text = render_string(": " + str(WEAP_VAL).ljust(3, ' ') + " ", FEAR_FONT, 30)
+            res_frame.add_child(text)
         
             return table
 
@@ -156,7 +156,7 @@ class GUI:
             # Create and display two 'standard' frames.
             inp_frame = HFrame (Label ("Input"))
             inp_frame.set_boarder = (BORDER_SUNKEN)
-                
+            
             inp_table.add_child (0, 0, inp_frame)
 
             for i in xrange(3):
@@ -172,7 +172,8 @@ class GUI:
             # Create and display two 'standard' frames.
             minimap_frame = HFrame (Label ("Minimap"))
             minimap_frame.set_boarder = (BORDER_SUNKEN)
-                
+
+                            
             minimap_table.add_child (0, 0, minimap_frame)
 
             for i in xrange(3):
@@ -202,15 +203,5 @@ class GUI:
     def fog_of_war(self):
         pass
        
-main_gui = GUI()
 
-main_menu = main_gui.init_draw_window('Zombie Survival Board Game')
-main_menu.add_widget(main_gui.draw_frame('resources'))
-main_menu.add_widget(main_gui.draw_frame('main_menu'))
-main_menu.add_widget(main_gui.draw_frame('minimap'))
-main_menu.add_widget(main_gui.draw_frame('input'))
-#button = Button ('HelloWorld')
-#button.topleft=(100,50)
-#main_menu.add_widget (button)
 
-main_menu.start ()

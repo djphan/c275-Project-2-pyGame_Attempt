@@ -32,6 +32,8 @@ if __name__ == "__main__":
 
     main_menu.start ()
 
+    pygame.display.flip()
+
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
