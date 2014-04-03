@@ -36,10 +36,10 @@ BASE_COLOUR = (230, 230, 230)
 
 
 # Resource Values
-HEALTH_VAL = 10
+HEALTH_VAL = 100
 PEOPLE_VAL = 1
 FOOD_VAL = 3
-WEAP_VAL = 0
+WEAP_VAL = 9
 
 def render_string(string, font, size):
     """
@@ -117,16 +117,16 @@ class GUI:
             # Add Graphical Components
             res_frame.add_child(HEALTH)
             # Pads text so updates to values keep the same positions
-            text = render_string(": " + str(HEALTH_VAL).ljust(3, ' ') + " ", FEAR_FONT, 30)
+            text = render_string(": " + str(HEALTH_VAL).rjust(3, '0') + " ", FEAR_FONT, 30)
             res_frame.add_child(text)
             res_frame.add_child(PEOPLE)
-            text = render_string(": " + str(PEOPLE_VAL).ljust(3, ' ') + " ", FEAR_FONT, 30)
+            text = render_string(": " + str(PEOPLE_VAL).rjust(3, '0') + " ", FEAR_FONT, 30)
             res_frame.add_child(text)
             res_frame.add_child(FOOD)
-            text = render_string(": " + str(FOOD_VAL).ljust(3, ' ') + " ", FEAR_FONT, 30)
+            text = render_string(": " + str(FOOD_VAL).rjust(3, '0') + " ", FEAR_FONT, 30)
             res_frame.add_child(text)
             res_frame.add_child(WEAP)
-            text = render_string(": " + str(WEAP_VAL).ljust(3, ' ') + " ", FEAR_FONT, 30)
+            text = render_string(": " + str(WEAP_VAL).rjust(3, '0') + " ", FEAR_FONT, 30)
             res_frame.add_child(text)
         
             return table
