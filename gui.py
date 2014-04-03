@@ -4,7 +4,6 @@ import random
 # Import various assets and modules for function
 from ocempgui.widgets import *
 from ocempgui.widgets.Constants import *
-
 from sounds import SoundManager
 
 # GUI size information
@@ -15,6 +14,17 @@ MAP_WIDTH = 800
 BAR_WIDTH = 400
 BUTTON_HEIGHT = 50
 CENTER = 100
+
+# Allows for pygame to render images onto the GUI
+screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+#GUI Image File Maps 
+HEALTH = ImageLabel ("asset/menu/health.png")
+PEOPLE = ImageLabel ("asset/menu/person.png")
+FOOD = ImageLabel ("asset/menu/soup.png")
+WEAP = ImageLabel ("asset/menu/gun.png")
+
+#------------
 
 # Set the fonts
 pygame.font.init()
@@ -45,16 +55,34 @@ OUTLINE_COLOR = (50, 50, 50)
 BUTTON_HIGHLIGHT_COLOR = (255, 255, 255)
 BUTTON_DISABLED_COLOR = (64, 64, 64)
 
-pygame.init()
-screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+#---------------------------------
 
-#GUI Image File Maps 
-HEALTH = ImageLabel ("asset/menu/health.png")
-PEOPLE = ImageLabel ("asset/menu/person.png")
-FOOD = ImageLabel ("asset/menu/soup.png")
-WEAP = ImageLabel ("asset/menu/gun.png")
+
+
 
 class GUI:
+    """
+    This is the core GUI class required to run the game.  It is responsible for 
+    rendering all the objects on screen. It will interact with the units and the level
+    updating the game's image side as the game is played.
+
+    As well various tools will be used to keep track of map positions and other enviromental
+    factors will be used to call on triggered events in the game.
+    """
+    # Number of GUI instances
+    instance_num = 0
+
+    def can_move(self):
+        pass
+    def avaliable_actions(self):
+        pass
+
+    def enviroment_update(self):
+        pass
+
+    def end_turn(self):
+        pass
+
     def init_draw_window(self, string):
         """
         Initalize the GUI window using OceanGUI modules. This function
@@ -155,6 +183,24 @@ class GUI:
         else:
             # Add/overide for other modules.
             pass
+
+    def load_map(self):
+        pass
+
+    def load_unit(self):
+        pass
+
+    def load_items(self):
+        pass
+
+    def update(self):
+        pass
+
+    def draw(self):
+        pass
+
+    def fog_of_war(self):
+        pass
        
 main_gui = GUI()
 

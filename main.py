@@ -3,10 +3,6 @@
 import sys, pygame
 from gui import GUI
 
-RESOLUTION = pygame.Rect(0, 0, 1080, 720)
-BG_COLOR = (200, 200, 200)
-
-
 class MainMenu:
     def loadLevel(self, filename):
         # If a filename was given, load that level. Otherwise, load a default.
@@ -16,30 +12,32 @@ class MainMenu:
         #main_gui.load_level("maps/" + level + ".lvl")
         pass
 
-    def initalize_game(self):
-        """
-        Initiallize the game with pygame material.
-        """
-        pygame.mixer.pre_init(22050, -16, 2, 512) # Small buffer for less lag
-        pygame.init()
-        pygame.display.set_caption("Zombie Survivors")
-        main_gui = GUI(RESOLUTION, BG_COLOR)
-        clock = pygame.time.Clock()
-
     def loadMenu(self, filename):
         pass
 
 if __name__ == "__main__":
-    argv = sys.argv[1:]
-    self.initalize_game()
+    # Initalize elements of the game
+    pygame.mixer.pre_init(22050, -16, 2, 512) # Small buffer for less sound lag
+    pygame.init()
+    clock = pygame.time.Clock()
 
-    # The main game loop
+    # Initalize the GUI
+    main_gui = GUI()
+    main_menu = main_gui.init_draw_window('Zombie Survival Board Game')
+
+    main_menu.add_widget(main_gui.draw_frame('resources'))
+    main_menu.add_widget(main_gui.draw_frame('main_menu'))
+    main_menu.add_widget(main_gui.draw_frame('minimap'))
+    main_menu.add_widget(main_gui.draw_frame('input'))
+
+    main_menu.start ()
+
     while 1:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.display.quit()
                 sys.exit()
-            # Quit the game when Q or ESC is pressed
+            # End if q is pressed
             elif (event.type == pygame.KEYDOWN and
             (event.key == pygame.K_q or event.key == pygame.K_ESCAPE)):
                 pygame.display.quit()
@@ -47,9 +45,8 @@ if __name__ == "__main__":
             # Respond to clicks
             elif event.type == pygame.MOUSEBUTTONUP:
                 main_gui.on_click(event)
-        main_gui.update()
-        main_gui.draw()
         clock.tick(60)
+
 
 
 

@@ -1,6 +1,5 @@
 c275_project
 ============
-
 ------------------------------------------------------------------------------------
 Important
 ------------------------------------------------------------------------------------
@@ -8,6 +7,10 @@ The following project is written in Python 2.7. Please load the main files
 in Python 2.7 otherwise the project will not open properly. All instructions 
 are tailored for Ubuntu. Documentation contains information for Windows
 installation, and Macs are unsupported.
+
+You can run the program using the command:
+
+python main.py
 
 ------------------------------------------------------------------------------------
 Installation

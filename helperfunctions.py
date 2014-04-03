@@ -1,4 +1,5 @@
 import random
+import math
 
 def randomizer_output(items):
     """
@@ -16,3 +17,18 @@ def randomizer_output(items):
             return item
         n = n - weight
     return item
+
+def constrain(value, min_value, max_value):
+    """
+    Constrain a value between two values (min, max). Useful in interactions
+    such as health/damage - etc.
+   
+    >>> constrain(12, 0, 18)
+    12
+    >>> constrain(-9, 0, 5)
+    0
+    >>> constrain(10, -1, 2)
+    2
+    
+    """
+    return min(max_value, max(value, min_value))
