@@ -1,0 +1,10 @@
+Tiles: asset/DeadlySin.png
+Tile Size: 32x32
+Nodes: 4
+
+MAPS START
+0 maps/level01/lvl01_node01.gif
+1 maps/level01/lvl01_node02.gif
+2 maps/level01/lvl01_node03.gif
+3 maps/level01/lvl01_node04.gif
+MAPS END
