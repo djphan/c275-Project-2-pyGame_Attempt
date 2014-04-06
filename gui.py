@@ -1,12 +1,14 @@
 import sys 
 import pygame, pygame.locals
 import random
+import tiles
+
+from collections import namedtuple
 
 # Import various assets and modules for function
 from ocempgui.widgets import *
 from ocempgui.widgets.Constants import *
-from ocempgui.draw import String
-
+from ocempgui.draw import String, Image
 
 from sounds import SoundManager
 
@@ -50,7 +52,7 @@ def render_string(string, font, size):
     text = ImageLabel(text)
     return text
 
-class GUI:
+class GUI():
     """
     This is the core GUI class required to run the game.  It is responsible for 
     rendering all the objects on screen. It will interact with the units and the level
@@ -61,6 +63,7 @@ class GUI:
     """
     # Number of GUI instances
     instance_num = 0
+	
 
     def can_move(self):
         pass
@@ -186,7 +189,10 @@ class GUI:
             pass
 
     def load_map(self):
-        pass
+        image = Image.load_image("asset/DeadlySin.png")
+        screen.blit(image, (100,100))
+        pygame.display.flip()
+        return
 
     def load_unit(self):
         pass
