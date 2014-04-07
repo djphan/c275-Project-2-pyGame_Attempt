@@ -1,0 +1,30 @@
+from unit.zombiebase import ZombieUnit
+import unit, maps
+import pygame
+# from maps import 
+
+class Zombie(ZombieUnit)
+    """
+    This is the standard zombie unit. Since the zombie is not significant
+    the stats of this unit are pretty low. But with huge groups of them they
+    can swarm the player.
+    """
+
+    sprite_image = pygame.image.load("asset/units/zombiefront.png")
+
+    def __init__(self, **keywords):
+        #load the image for the base class.
+        self._base_image = Zombie.sprite
+
+        #load the base class
+        super().__init__(**keywords)
+
+        #set unit specific things.
+        self.type = "Basic Zombie"
+        self.speed = 1
+        self.damage = 2
+        self.defense = 1
+        self.health = 3
+        self.max_health = 3
+        
+unit.unit_types["Basic Zombie"] = Zombie

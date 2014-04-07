@@ -1,0 +1,7 @@
+__all__ = ['base_unit',
+           'zombiebase',
+           'survivor_base'
+           'basic_zombie'
+           'main_char']
+
+unit_types = {}
