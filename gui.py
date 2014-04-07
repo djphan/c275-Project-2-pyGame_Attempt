@@ -1,9 +1,7 @@
 import sys 
 import pygame, pygame.locals
 import random
-import tiles
-
-from collections import namedtuple
+import maps
 
 # Import various assets and modules for function
 from ocempgui.widgets import *
@@ -42,6 +40,11 @@ HEALTH_VAL = 100
 PEOPLE_VAL = 1
 FOOD_VAL = 3
 WEAP_VAL = 9
+
+# Default Map size (30X20 TILES)
+MAP_WIDTH = 960
+MAP_HEIGHT = 640
+TILE_DIMENSION = 32
 
 def render_string(string, font, size):
     """
@@ -189,8 +192,11 @@ class GUI():
             pass
 
     def load_map(self):
-        image = Image.load_image("asset/DeadlySin.png")
-        screen.blit(image, (100,100))
+        for y in range(len(maps.MAP_node1)):
+            for x in range(len(maps.MAP_node1[y])):
+                location = (x*TILE_DIMENSION+100,y*TILE_DIMENSION+100)
+                screen.blit(maps.parent_image,location,maps.MAP_node1[y][x])
+                
         pygame.display.flip()
         return
 
