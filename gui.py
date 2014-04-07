@@ -234,6 +234,9 @@ class GUI(LayeredUpdates):
             pass
 
     def load_map(self):
+        """
+        Loads the current map. ***
+        """
         for y in range(len(maps.MAP_node1)):
             for x in range(len(maps.MAP_node1[y])):
                 location = (x*TILE_DIMENSION+10, y*TILE_DIMENSION+10)

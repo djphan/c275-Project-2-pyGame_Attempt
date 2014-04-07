@@ -1,6 +1,7 @@
 import pygame
 from pygame import *
 from collections import namedtuple
+from pygame.sprite import LayeredUpdates
 
 # Assign a Parent Image 
 parent_image = pygame.image.load('asset/tiles.png')
@@ -29,6 +30,10 @@ TILES = {
     'f2':  Tile(pygame.Rect(384, 320, 32, 32), 'FALSE'), # Fire2
     'pc':  Tile(pygame.Rect(448, 320, 32, 32), 'FALSE')  # Purple Crystal
 }
+
+class MAP(LayeredUpdates):
+    pass
+
 
 def map_matrix(filename):
     pass
