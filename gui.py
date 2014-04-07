@@ -8,6 +8,10 @@ from ocempgui.widgets import *
 from ocempgui.widgets.Constants import *
 from ocempgui.draw import String, Image
 
+# ***
+# Import game assets handling modules
+import unit
+from unit import *
 from sounds import SoundManager
 
 # GUI size information
@@ -201,7 +205,13 @@ class GUI():
         return
 
     def load_unit(self):
-        pass
+        #***
+        """
+        This function draws the unit onto the screen.
+        """
+        for units in base_unit.UnitBase.active_units:
+            self.update_unit_rect(u)
+        base_unit.UnitBase.active_units.draw(self.screen)
 
     def load_items(self):
         pass

@@ -4,6 +4,11 @@ import sys, pygame
 from gui import GUI
 
 class MainMenu:
+    """
+    This class is to handle the main menu screen (the first screen) that we give to our
+    game. If there is time we would like to implement a save function, in which
+    we record our levels and the player can load in their game.
+    """
     def loadLevel(self, filename):
         # If a filename was given, load that level. Otherwise, load a default.
         #level = "island"
