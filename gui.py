@@ -11,7 +11,6 @@ from ocempgui.draw import String, Image
 # ***
 # Import game assets handling modules
 import unit
-from unit import *
 from sounds import SoundManager
 
 # GUI size information
@@ -27,17 +26,12 @@ PEOPLE = ImageLabel ("asset/menu/person.png")
 FOOD = ImageLabel ("asset/menu/soup.png")
 WEAP = ImageLabel ("asset/menu/gun.png")
 
-#------------
-
 # Set the fonts to render in the GUI
 FEAR_FONT = "asset/menu/FaceYourFears.tft"
 pygame.font.init()
 
 # RGB colors for the GUI
 BASE_COLOUR = (230, 230, 230)
-
-#---------------------------------
-
 
 # Resource Values
 HEALTH_VAL = 100
@@ -49,6 +43,13 @@ WEAP_VAL = 9
 MAP_WIDTH = 960
 MAP_HEIGHT = 640
 TILE_DIMENSION = 32
+
+# Names for the different factions in the game to control the units.
+TEAM_NAME = {
+    0: "survior",
+    1: "zombie",
+    2: "neutral"
+}
 
 def render_string(string, font, size):
     """
@@ -71,9 +72,27 @@ class GUI():
     # Number of GUI instances
     instance_num = 0
 	
-
+    # Think about placeholders for the unit actions for the other options.
     def can_move(self):
-        pass
+        """
+        Checks whether we can move our unit
+        """
+        # If no unit is selected, we can't.
+        if not self.sel_unit: return False
+        
+        # If the unit is done its move, we can't.
+        return not self.sel_unit.turn_state[0]
+
+    def can_action(self):
+        """
+        Checks whether we can move our unit
+        """
+        # If no unit is selected, we can't
+        if not self.sel_unit: return False
+        
+        # If the unit is done its move, we can't.
+        return not self.sel_unit.turn_state[0]
+
     def avaliable_actions(self):
         pass
 
@@ -115,40 +134,43 @@ class GUI():
         """
         if menu_object == "resources":
             # Set a table of row, column size to fill in
-            table = Table (2, 2)
+            outer_table = Table (1, 1)
+            inner_table = Table (4, 2)
             # Set location based on x,y coordinates from top left - Graphical Notations.
-            table.topleft = 5, 5
-            table.spacing = 5
+            outer_table.topleft = 980, 5
+            outer_table.spacing = 5
+            inner_table.spacing = 5
         
             # Creates and sets the border
-            res_frame = HFrame (Label ("Resource Summary"))
-            table.add_child (0, 0, res_frame)
+            res_frame = VFrame (Label ("Resource Summary"))
+            outer_table.add_child (0, 0, res_frame)
 
             # Add Graphical Components
-            res_frame.add_child(HEALTH)
-            # Pads text so updates to values keep the same positions
+            inner_table.add_child (0, 0, HEALTH)
+            # Pads text so updates to values keep the same positions    
             text = render_string(": " + str(HEALTH_VAL).rjust(3, '0') + " ", FEAR_FONT, 30)
-            res_frame.add_child(text)
-            res_frame.add_child(PEOPLE)
+            inner_table.add_child(0, 1, text)
+            inner_table.add_child(1, 0, PEOPLE)
             text = render_string(": " + str(PEOPLE_VAL).rjust(3, '0') + " ", FEAR_FONT, 30)
-            res_frame.add_child(text)
-            res_frame.add_child(FOOD)
+            inner_table.add_child(1, 1, text)
+            inner_table.add_child(2, 0, FOOD)
             text = render_string(": " + str(FOOD_VAL).rjust(3, '0') + " ", FEAR_FONT, 30)
-            res_frame.add_child(text)
-            res_frame.add_child(WEAP)
+            inner_table.add_child(2, 1, text)
+            inner_table.add_child(3, 0, WEAP)
             text = render_string(": " + str(WEAP_VAL).rjust(3, '0') + " ", FEAR_FONT, 30)
-            res_frame.add_child(text)
-        
-            return table
+            inner_table.add_child(3, 1, text)
+
+            res_frame.add_child(inner_table)
+            return outer_table
 
         elif menu_object == 'main_menu':
             mm_table = Table (2, 3)
 
             # Adjust
-            mm_table.topleft = 1000, 5
+            mm_table.topleft = 980, 265
             mm_table.spacing = 5
             
-            mm_frame = HFrame (Label ("LOL"))
+            mm_frame = HFrame (Label ("main"))
             mm_frame.set_boarder = (BORDER_SUNKEN)
                 
             mm_table.add_child (0, 0, mm_frame)
@@ -160,7 +182,7 @@ class GUI():
        
         elif menu_object == 'input':
             inp_table = Table (2, 3)
-            inp_table.topleft = 215, 600
+            inp_table.topleft = 10, 655
             inp_table.spacing = 5
             
             # Create and display two 'standard' frames.
@@ -175,14 +197,13 @@ class GUI():
             return inp_table
 
         elif menu_object == 'minimap':
-            minimap_table = Table (2, 3)
-            minimap_table.topleft = 5, 600
+            minimap_table = Table (1, 1)
+            minimap_table.topleft = 980, 655
             minimap_table.spacing = 5
-            
+           
             # Create and display two 'standard' frames.
             minimap_frame = HFrame (Label ("Minimap"))
             minimap_frame.set_boarder = (BORDER_SUNKEN)
-
                             
             minimap_table.add_child (0, 0, minimap_frame)
 
@@ -191,6 +212,22 @@ class GUI():
                 minimap_frame.add_child (btn)
             return minimap_table
 
+        elif menu_object == 'txtstats':
+            txtstats_table = Table (1, 1)
+            txtstats_table.topleft = 1115, 5
+            txtstats_table.spacing = 5
+           
+            # Create and display two 'standard' frames.
+            txtstats_frame = VFrame ()
+            txtstats_frame.set_boarder = (BORDER_SUNKEN)
+                            
+            txtstats_table.add_child (0, 0, txtstats_frame)
+
+            for i in xrange(3):
+                btn = Button ("Button %d" % i)
+                txtstats_frame.add_child (btn)
+            return txtstats_table
+
         else:
             # Add/overide for other modules.
             pass
@@ -198,7 +235,7 @@ class GUI():
     def load_map(self):
         for y in range(len(maps.MAP_node1)):
             for x in range(len(maps.MAP_node1[y])):
-                location = (x*TILE_DIMENSION+100,y*TILE_DIMENSION+100)
+                location = (x*TILE_DIMENSION+10, y*TILE_DIMENSION+10)
                 tile_key = maps.MAP_node1[y][x]
                 tile_area = maps.TILES[tile_key].area
                 screen.blit(maps.parent_image,location,tile_area)
