@@ -1,0 +1,3 @@
+Tiles: asset/tiles.png
+Tile Size: 32x32
+Map Size: 30x20

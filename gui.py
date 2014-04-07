@@ -4,6 +4,7 @@ import random
 import maps
 
 # Import various assets and modules for function
+from pygame.sprite import LayeredUpdates
 from ocempgui.widgets import *
 from ocempgui.widgets.Constants import *
 from ocempgui.draw import String, Image
@@ -55,7 +56,7 @@ def render_string(string, font, size):
     text = ImageLabel(text)
     return text
 
-class GUI():
+class GUI(LayeredUpdates):
     """
     This is the core GUI class required to run the game.  It is responsible for 
     rendering all the objects on screen. It will interact with the units and the level
