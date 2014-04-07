@@ -199,7 +199,9 @@ class GUI():
         for y in range(len(maps.MAP_node1)):
             for x in range(len(maps.MAP_node1[y])):
                 location = (x*TILE_DIMENSION+100,y*TILE_DIMENSION+100)
-                screen.blit(maps.parent_image,location,maps.MAP_node1[y][x])
+                tile_key = maps.MAP_node1[y][x]
+                tile_area = maps.TILES[tile_key].area
+                screen.blit(maps.parent_image,location,tile_area)
                 
         pygame.display.flip()
         return
