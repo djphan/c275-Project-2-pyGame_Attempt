@@ -165,7 +165,13 @@ class GUI(LayeredUpdates):
         self.sel_unit = None 
         self.sel_tile = None 
         self.sel_event = None
-        self.sel_gamestate = GameStage.Exploration  
+        self.sel_gamestate = GameStage.Exploration
+
+        
+        # Initiate mapping
+        self.current_node = None        
+        level = 'level1'
+        self.map = MAP("maps/" + level + ".txt")
 
     def select_mode(self, mode):
         """
@@ -356,19 +362,19 @@ class GUI(LayeredUpdates):
             self.update_unit_rect(u)
         base_unit.UnitBase.active_units.draw(self.screen)
 
-
-    def load_map(self):
+    def load_map(self, node=0):
         """
-        Loads the current map. ***
+        Loads the current map depending on the current node.
         """
-        current_map = MAP()
+        # Set current node to new loaded map.
+        self.current_node = node
         
-        for y in range(len(current_map._map_matrix)):
-            for x in range(len(current_map._map_matrix[y])):
+        for y in range(len(self.map._map_matrix)):
+            for x in range(len(self.map._map_matrix[y])):
                 location = (x*TILE_DIMENSION+10, y*TILE_DIMENSION+10)
-                tile_key = current_map._map_matrix[y][x]
-                tile_area = current_map.TILES[tile_key].area
-                screen.blit(current_map.parent_image,location,tile_area)
+                tile_key = self.map._map_matrix[y][x]
+                tile_area = self.map.TILES[tile_key].area
+                screen.blit(self.map.parent_image,location,tile_area)
                 
         pygame.display.flip()
         return

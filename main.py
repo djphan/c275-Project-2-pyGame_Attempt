@@ -2,7 +2,7 @@
 
 import sys, pygame
 from gui import GUI
-
+from maps import MAP
 # With time we would like to include a title menu for the game here.
 
 if __name__ == "__main__":
@@ -14,8 +14,9 @@ if __name__ == "__main__":
     # Initalize the GUI
     main_gui = GUI()
     main_menu = main_gui.init_draw_window('Zombie Survival Board Game')
+
+    main_gui.load_map()
     
-    main_gui.load_map()    
     main_menu.add_widget(main_gui.draw_frame('resources'))
     main_menu.add_widget(main_gui.draw_frame('main_menu'))
     main_menu.add_widget(main_gui.draw_frame('minimap'))

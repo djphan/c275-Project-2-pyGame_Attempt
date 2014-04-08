@@ -4,8 +4,8 @@ from collections import namedtuple
 from pygame.sprite import Sprite
 
 # Default Map size (30X20 TILES)
-MAP_WIDTH = 960
-MAP_HEIGHT = 640
+MAP_WIDTH = 30
+MAP_HEIGHT = 20
 TILE_DIMENSION = 32
 
 class MAP(Sprite):
@@ -41,40 +41,93 @@ class MAP(Sprite):
         'pc':  Tile(pygame.Rect(448, 320, 32, 32), 'FALSE')  # Purple Crystal
     }
 
-    def load_mapfile(self, map_file):
-        # Matrix mapping tiles to background.
-        MAP_node1 = [['wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','gb','gb','gb','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','ws','gb','gb','gb','gb','gb','gb','gb','wl','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                    ['wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gb','gb','gs','gs','gs','gs','gs','wl']]
-        return MAP_node1
+    def load_lvl_file(self, level_file):
+        """
+        Opens maps/level_.txt for specified level and stores number of nodes 
+        and a list of their associated matrix files
+        """
+        lvl_file = open(level_file, 'r')
+        # Move up to the line with the Nodes Count
+        line = lvl_file.readline()
+        while line.find("Nodes: ") < 0:
+            line = lvl_file.readline()
+            if line == "":
+                raise Exception ("Expected team count")
+                
+        # Get the number of Nodes
+        line = line.lstrip("Nodes: ")
+        self._node_count = int(line)    
+    
+     
+        # Move up to the MAPS definitions
+        while line.find("MAPS START") < 0:
+            line = lvl_file.readline()
+            if line == "":
+                raise Exception ("Expected unit definitions")
+        line = lvl_file.readline()
+        
+        # Store list of MAPS.
+        maps = []
+        while line.find("MAPS END") < 0:
+            line = line.replace('\n', '')
+            maps.append(line) 
+            line = lvl_file.readline()
+        
+        return maps
+        
 
-
-    def __init__(self, map_file=None, tile_width=TILE_DIMENSION, tile_height=TILE_DIMENSION):
+    def load_mapfile(self, node):
+        """
+        Load mapfile by indexing to specific node within self._nodes list.
+        
+        load_mapfile(level1_node1) outputs this...
+        
+        matrix = [['wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','gb','gb','gb','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','ws','gb','gb','gb','gb','gb','gb','gb','wl','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
+                     ['wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gb','gb','gs','gs','gs','gs','gs','wl']] 
+          
+        """
+        matrix = [[] for i in range(self._map_height)]
+        map_file = open(self._nodes[node], 'r')
+        # Move up to the line with the Nodes Count
+        line = map_file.readline()
+        for y in range(self._map_height):
+            line = line.rstrip()
+            line = line.split()
+            for x in range(self._map_width):
+                matrix[y].append(line[x])
+            line = map_file.readline()
+        
+        self._map_matrix = matrix
+        return matrix
+        
+    def __init__(self, level_file, tile_width=TILE_DIMENSION, tile_height=TILE_DIMENSION, map_width=MAP_WIDTH, map_height=MAP_HEIGHT):
         # Set up map info
         #self._sprite_sheet = pygame.image.load('/asset/tiles.png')
         self._tile_width = tile_width
         self._tile_height = tile_height
-        self._map_width = None
-        self._map_height = None
-        self._node = None
-        self._map_matrix = self.load_mapfile(map_file)
+        self._map_width = map_width
+        self._map_height = map_height
+        self._node_count = None
+        self._nodes = self.load_lvl_file(level_file)
+        self._map_matrix = self.load_mapfile(node=0)
         self._highlights = {}
         
         Sprite.__init__(self)
@@ -83,28 +136,4 @@ class MAP(Sprite):
         self.image = None
         self._base_image = None
         self.rect = pygame.Rect(0, 0, 0, 0)  
-
-
-    """
-    # Matrix mapping tiles to background.
-    MAP_node1 = [['wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','gb','gb','gb','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','gb','gb','gb','gb','gb','wl','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gb','gb','gs','gs','gs','gs','gs','wl']] 
-    """            
+    

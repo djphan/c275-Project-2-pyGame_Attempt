@@ -1,3 +1,11 @@
 Tiles: asset/tiles.png
 Tile Size: 32x32
 Map Size: 30x20
+
+Nodes: 3
+
+MAPS START
+maps/level1_node1.txt
+maps/level1_node2.txt
+maps/level1_node3.txt
+MAPS END
