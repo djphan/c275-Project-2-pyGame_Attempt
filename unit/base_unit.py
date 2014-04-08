@@ -1,9 +1,8 @@
-import pygame, unit, helperfunctions
+import pygame, unit, maps, helperfunctions
 from pygame.sprite import Sprite
 
 FRAME_MOVE_SPEED = 3/20
 SIZE = 32
-
 
 class BaseUnit(Sprite):
     """
@@ -21,14 +20,14 @@ class BaseUnit(Sprite):
     """
 
     # This keep tracks of all the active units in engine and renders them onto the level
-    active_units = pygame.spirte.LayeredUpdates()
+    active_units = pygame.sprite.LayeredUpdates()
     
     def __init__(self, 
                  team = -1,
-                 pos_x = None,
-                 pos_y = None,
+                 tilex = None,
+                 tiley = None,
                  angle = 0,
-                 active = False,
+                 activate = False,
                  **keywords):
 
         Sprite.__init__(self)
@@ -59,7 +58,6 @@ class BaseUnit(Sprite):
         self.hit_sound = None
         self.die_sound = None
         
-
         #set required pygame things.
         self.image = None
         self.rect = pygame.Rect(0, 0, SIZE, SIZE)
@@ -130,10 +128,10 @@ class BaseUnit(Sprite):
         Re-renders the unit's image.
         """
         # Pick out the right sprite depending on the team
-        subrect = pygame.Rect(self.team * SIZE,
+        subrect = pygame.Rect(0,
                               0,
-                              self.rect.w,
-                              self.rect.h)
+                              32,
+                              32)
         try:
             subsurf = self._base_image.subsurface(subrect)
         except ValueError:
@@ -149,16 +147,16 @@ class BaseUnit(Sprite):
         self.image = pygame.transform.rotate(subsurf, self._angle)
 
         # Render the health.
-        health_surf = BaseUnit.health_font.render(str(int(self.health)))
+      #  health_surf = BaseUnit.health_font.render(str(int(self.health)))
         
         # Move the health to the bottom-right of the image.
-        image_rect = self.image.get_rect()
-        health_rect = health_surf.get_rect()
-        health_rect.move_ip(image_rect.w - health_rect.w,
-                            image_rect.h - health_rect.h)
+      #  image_rect = self.image.get_rect()
+      #  health_rect = health_surf.get_rect()
+      #  health_rect.move_ip(image_rect.w - health_rect.w,
+       #                     image_rect.h - health_rect.h)
                             
         # Draw the health on to the image.
-        self.image.blit(health_surf, health_rect)
+      #  self.image.blit(health_surf, health_rect)
         
     def activate(self):
         """

@@ -1,12 +1,10 @@
-from unit.base_unit import UnitBase
-import unit, helper
-import tiles
-import pygame
+from unit.base_unit import BaseUnit
+import unit, helperfunctions, maps, pygame
 
 # Layer of the Survivor units for rendering
 # SURVIOR_LAYER = 3
 
-class ZombieUnit(UnitBase):
+class SurvivorUnit(BaseUnit):
     """
     This is the base zombie unit that all enemies are determined on.
     This class will contain all the necessary functions to run the zombie
@@ -21,7 +19,7 @@ class ZombieUnit(UnitBase):
         self.min_move_distance = 1
         
         #load the base class
-        super().__init__(**keywords)
+        super(SurviorUnit, self).__init__(**keywords)
         
         #All air units have the same movement sound
         self.move_sound = "JetMove"

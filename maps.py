@@ -12,7 +12,6 @@ class MAP(Sprite):
     
     active_map = pygame.sprite.LayeredUpdates()
 
-
     # Assign a Parent Image 
     parent_image = pygame.image.load('asset/tiles.png')
 
@@ -136,4 +135,3 @@ class MAP(Sprite):
         self.image = None
         self._base_image = None
         self.rect = pygame.Rect(0, 0, 0, 0)  
-    

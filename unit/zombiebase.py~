@@ -1,7 +1,7 @@
-from unit.base_unit import UnitBase
-import maps, helper
-import tiles
-import pygame
+import pygame, unit, maps, helperfunctions
+
+from unit.base_unit import BaseUnit
+from pygame.sprite import Sprite
 
 # Layer of the zombie units for rendering
 ZOMBIE_LAYER = 3
