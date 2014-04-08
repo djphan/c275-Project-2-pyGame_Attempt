@@ -388,6 +388,7 @@ class GUI(LayeredUpdates):
         """
         # Set current node to new loaded map.
         self.current_node = node
+        self.map._map_matrix = self.map.load_mapfile(node)
         
         for y in range(len(self.map._map_matrix)):
             for x in range(len(self.map._map_matrix[y])):
