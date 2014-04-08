@@ -2,6 +2,7 @@ def swap_tile(map_file):
     """
     Swap specific tiles inside the declared .txt file for mapping.
     Reference maps.py for tile codes.
+    Initiate in ipython3
     """
     with open(map_file, "r+") as f:
         file_text = f.read()
