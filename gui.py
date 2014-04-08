@@ -220,14 +220,24 @@ class GUI(LayeredUpdates):
             mm_table.topleft = 980, 265
             mm_table.spacing = 5
             
-            mm_frame = HFrame (Label ("main"))
+            mm_frame = VFrame (Label ("main"))
             mm_frame.set_boarder = (BORDER_SUNKEN)
                 
             mm_table.add_child (0, 0, mm_frame)
+            text = render_string("Welcome to Urban Zombie", FEAR_FONT, 30)
+            mm_frame.add_child (text)
+            text = render_string("Survival. Stat Text", FEAR_FONT, 30)
+            mm_frame.add_child (text)
+            text = render_string("Render Prototype Here", FEAR_FONT, 30)
+            mm_frame.add_child (text)
+            progress = ProgressBar ()
+            progress.value = 50.0
+            progress.text = "E.g.50.00% Full"
+            progress.sensitive = False
+            mm_frame.add_child (progress)
 
-            for i in xrange(3):
-                btn = Button ("Button %d" % i)
-                mm_frame.add_child (btn)
+
+
             return mm_table    
        
         elif menu_object == 'input':
@@ -270,10 +280,6 @@ class GUI(LayeredUpdates):
                             
             txtstats_table.add_child (0, 0, txtstats_frame)
 
-            for i in xrange(3):
-                btn = Button ("Button %d" % i)
-                txtstats_frame.add_child (btn)
-            return txtstats_table
 
         else:
             # Add/overide for other modules.
