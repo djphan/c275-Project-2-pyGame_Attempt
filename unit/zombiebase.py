@@ -1,7 +1,7 @@
+import pygame, unit, maps, helperfunctions
+
 from unit.base_unit import BaseUnit
-import maps, helper
-import tiles
-import pygame
+from pygame.sprite import Sprite
 
 # Layer of the zombie units for rendering
 ZOMBIE_LAYER = 3
@@ -14,7 +14,7 @@ class ZombieUnit(BaseUnit):
     """
     def __init__(self, **keywords):
         #load the base class
-        super().__init__(**keywords)
+        super(ZombieUnit, self).__init__(**keywords)
         
         #Give zombies a standard shuffle sound. ***
         self.move_sound = None

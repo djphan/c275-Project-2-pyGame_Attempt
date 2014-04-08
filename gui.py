@@ -1,6 +1,6 @@
 import sys 
 import pygame, pygame.locals
-import random
+import random, unit
 from maps import MAP
 
 # Import various assets and modules for function
@@ -11,7 +11,7 @@ from ocempgui.draw import String, Image
 
 # ***
 # Import game assets handling modules
-import unit
+from unit import *
 from sounds import SoundManager
 
 # GUI size information
@@ -52,34 +52,6 @@ TEAM_NAME = {
     2: "neutral"
 }
 
-
-"""
-        # Create the units
-        while line.find("UNITS END") < 0:
-            line = line.rstrip()
-            line = line.split(' ')
-            unit_name = line[0]
-            unit_team = int(line[1])
-            unit_x, unit_y = int(line[2]), int(line[3])
-            unit_angle = int(line[4])
-            
-            if not unit_name in unit.unit_types:
-                raise Exception("No unit of name {} found!".format(unit_name))
-            new_unit = unit.unit_types[unit_name](team = unit_team,
-                                                  tile_x = unit_x,
-                                                  tile_y = unit_y,
-                                                  activate = True,
-                                                  angle = unit_angle)
-            
-            # Add the unit to the update group and set its display rect
-            self.update_unit_rect(new_unit)
-            
-            line = map_file.readline()
-            if line == "":
-                raise Exception ("Expected end of unit definitions")
-
-"""
-
 def render_string(string, font, size):
     """
     This is a helper function to render strings as an image widget
@@ -105,9 +77,44 @@ class UnitRender:
     def def_unit(self, file_name):
         """
         This class reads in a level and determines the unit information for that level
-        to render the image.
+        to render the image. Load in the file_name/path and open it.  
+        This was taken from assignment 4 and modified for the units.
         """
-        pass
+        # Open and read the file_name
+        file_name = open(file_name, 'r')
+        line = file_name.readline()
+
+        # Move up to the unit definitions
+        while line.find("UNITS START") < 0:
+            line = file_name.readline()
+            if line == "":
+                raise Exception ("Expected unit definitions")
+        line = file_name.readline()
+
+        # Create the units
+        while line.find("UNITS END") < 0:
+            line = line.rstrip()
+            line = line.split(' ')
+            unit_name = line[0]
+            unit_team = int(line[1])
+            unit_x, unit_y = int(line[2]), int(line[3])
+            unit_angle = int(line[4])
+            
+            if not unit_name in unit.unit_types:
+                raise Exception("No unit of name {} found!".format(unit_name))
+
+            new_unit = unit.unit_types[unit_name](team = unit_team,
+                                                  tilex = unit_x,
+                                                  tiley = unit_y,
+                                                  angle = unit_angle,
+                                                  activate = True)
+            
+            # Add the unit to the update group and set its display rect
+            self.update_unit_rect(new_unit)
+            
+            line = map_file.readline()
+            if line == "":
+                raise Exception ("Expected end of unit definitions")
 
     def draw_unit(self, active_units):
         """
@@ -138,6 +145,15 @@ class UnitRender:
         for tile_pos in self._attackable_tiles:
             screen_pos = self.map.screen_coords(tile_pos)
             self.draw_reticle(screen_pos)
+
+    def update_unit_rect(self, unit):
+        """
+        Scales a unit's display rectangle to screen coordiantes.
+        """
+        x, y = unit.tilex, unit.tiley
+        screen_x, screen_y = self.map.screen_coords((x, y))
+        unit.rect.x = screen_x
+        unit.rect.y = screen_y
 
 class GUI(LayeredUpdates):
     """
@@ -370,6 +386,8 @@ class GUI(LayeredUpdates):
                 tile_area = current_map.TILES[tile_key].area
                 screen.blit(current_map.parent_image,location,tile_area)
                 
+        units = UnitRender()
+        units.def_unit("maps/level1.txt")
         pygame.display.flip()
         return
 

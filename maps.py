@@ -12,7 +12,6 @@ class MAP(Sprite):
     
     active_map = pygame.sprite.LayeredUpdates()
 
-
     # Assign a Parent Image 
     parent_image = pygame.image.load('asset/tiles.png')
 
@@ -84,27 +83,3 @@ class MAP(Sprite):
         self._base_image = None
         self.rect = pygame.Rect(0, 0, 0, 0)  
 
-
-    """
-    # Matrix mapping tiles to background.
-    MAP_node1 = [['wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','ws','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','wr','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','dt','dt','dt','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','gb','gb','gb','gb','gb','wl','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','pf','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','ws','gb','gb','gb','gb','gb','gb','gb','wl','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','pc','wl','gb','gb','gs','gs','gs','gs','gs','wl'],\
-                 ['wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gb','gb','gs','gs','gs','gs','gs','wl']] 
-    """            

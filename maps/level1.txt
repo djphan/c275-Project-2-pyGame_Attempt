@@ -1,3 +1,13 @@
 Tiles: asset/tiles.png
 Tile Size: 32x32
 Map Size: 30x20
+
+Nodes: 1
+ 
+MAPS START
+maps/level1_node1.txt
+MAPS END
+
+UNITS START
+BasicZombie 1 2 2 180
+UNITS END
