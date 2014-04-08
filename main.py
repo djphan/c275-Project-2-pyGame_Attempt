@@ -17,7 +17,7 @@ if __name__ == "__main__":
 
     # Initalize the map
     main_gui.load_map()
-    
+  
     main_menu.add_widget(main_gui.draw_frame('resources'))
     main_menu.add_widget(main_gui.draw_frame('main_menu'))
     main_menu.add_widget(main_gui.draw_frame('minimap'))
