@@ -56,8 +56,7 @@ class MAP(Sprite):
         # Get the number of Nodes
         line = line.lstrip("Nodes: ")
         self._node_count = int(line)    
-    
-     
+         
         # Move up to the MAPS definitions
         while line.find("MAPS START") < 0:
             line = lvl_file.readline()
@@ -119,7 +118,7 @@ class MAP(Sprite):
         
     def __init__(self, level_file, tile_width=TILE_DIMENSION, tile_height=TILE_DIMENSION, map_width=MAP_WIDTH, map_height=MAP_HEIGHT):
         # Set up map info
-        #self._sprite_sheet = pygame.image.load('/asset/tiles.png')
+        # self._sprite_sheet = pygame.image.load('/asset/tiles.png')
         self._tile_width = tile_width
         self._tile_height = tile_height
         self._map_width = map_width
