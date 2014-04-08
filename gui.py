@@ -114,7 +114,7 @@ class UnitRender:
         This draws in the unit onto the screen for us.
         """
         for unit in active_units:
-            active_units.draw.(self.screen)
+            active_units.draw(self.screen)
 
     def select_unit(self):
         """
@@ -347,9 +347,6 @@ class GUI(LayeredUpdates):
             # Add/overide for other modules.
             pass
 
-<<<<<<< HEAD
-    def load_map(self, map_file=None):
-=======
     def load_unit(self):
         #***
         """
@@ -361,7 +358,6 @@ class GUI(LayeredUpdates):
 
 
     def load_map(self):
->>>>>>> 45946c5d5e2100dc77d90113049fc0f1a54ab34d
         """
         Loads the current map. ***
         """
