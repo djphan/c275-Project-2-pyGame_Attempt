@@ -14,7 +14,7 @@ class ZombieUnit(BaseUnit):
     """
     def __init__(self, **keywords):
         #load the base class
-        super().__init__(**keywords)
+        super(ZombieUnit, self).__init__(**keywords)
         
         #Give zombies a standard shuffle sound. ***
         self.move_sound = None
@@ -22,6 +22,14 @@ class ZombieUnit(BaseUnit):
 
         #Set unit specific things.
         self.type = "zombie"
+
+    def activate(self):
+        """
+        Adds this unit to the active roster. Sets it to a higher layer so that
+        it draws on top of other units.
+        """
+        super().activate()
+        BaseUnit.active_units.change_layer(self, ZOMBIE_LAYER)
         
     def valid_move(self, tile, position):
         """

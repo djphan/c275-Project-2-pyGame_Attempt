@@ -2,7 +2,7 @@ from unit.base_unit import BaseUnit
 import unit, helperfunctions, maps, pygame
 
 # Layer of the Survivor units for rendering
-# SURVIOR_LAYER = 3
+SURVIOR_LAYER = 3
 
 class SurvivorUnit(BaseUnit):
     """
@@ -22,74 +22,18 @@ class SurvivorUnit(BaseUnit):
         super(SurviorUnit, self).__init__(**keywords)
         
         #All air units have the same movement sound
-        self.move_sound = "JetMove"
+        self.move_sound = None
 
         #set unit specific things.
-        self.type = "Air Unit"
-        
-    @property
-    def fuel(self):
-        """
-        The unit's remaining fuel.
-        """
-        return self._fuel
-        
-    def _update_image(self):
-        """
-        Redraws the unit's image.
-        """
-        super()._update_image()
-        
-        # Determine percent of fuel remaining
-        fuel_percent = self.fuel / self.max_fuel
-        
-        # Get the rectangle for the inside of the indicator
-        inner_rect = pygame.Rect(FUEL_RECT.left + 1,
-                                 FUEL_RECT.top + 1,
-                                 FUEL_RECT.width - 2,
-                                 FUEL_RECT.height - 2)
-        
-        # Shrink it depending on the amount of fuel remaining
-        inner_rect.w -= inner_rect.w * (1 - fuel_percent)
-        if inner_rect.w < 1: inner_rect.w = 1
-        
-        # Determine the colours to use
-        if self.fuel > FUEL_BAD_CUTOFF:
-            back = FUEL_BACK_COLOUR
-        else:
-            back = FUEL_BACK_COLOUR_BAD
-        
-        if fuel_percent > 0.5:
-            fill = FUEL_FILL_COLOUR
-        else:
-            fill = FUEL_FILL_COLOUR_HALF
-        
-        # Draw the indicator
-        pygame.gfxdraw.box(self.image, FUEL_RECT, back)
-        pygame.gfxdraw.box(self.image, inner_rect, fill)
-    
-    def is_docked(self, pos):
-        """
-        Checks if the given position is currently adjacent to a carrier of the
-        same team.
-        """
-        for u in BaseUnit.active_units:
-            if (u.team == self.team and
-                isinstance(u, Carrier) and
-                helper.manhattan_dist((u.tile_x, u.tile_y), pos) <= 1):
-                # This is an adjacent carrier! Rejoice!
-                return True
-        
-        # No carriers
-        return False
+        self.type = "Survior"
         
     def activate(self):
         """
         Adds this unit to the active roster. Sets it to a higher layer so that
         it draws on top of other units.
         """
-        super().activate()
-        BaseUnit.active_units.change_layer(self, AIR_LAYER)
+        super(SurviorUnit, self).activate()
+        BaseUnit.active_units.change_layer(self, SURVIOR_LAYER)
         
     def is_stoppable(self, tile, pos):
         """
@@ -114,13 +58,6 @@ class SurvivorUnit(BaseUnit):
         by terrain bonus defense.
         """
         return self.defense
-        
-    def set_fuel(self, fuel):
-        """
-        Changes the fuel amount and updates the graphic.
-        """
-        self._fuel = fuel
-        self._update_image()
         
     def can_turn_end(self):
         """
