@@ -22,6 +22,14 @@ class ZombieUnit(BaseUnit):
 
         #Set unit specific things.
         self.type = "zombie"
+
+    def activate(self):
+        """
+        Adds this unit to the active roster. Sets it to a higher layer so that
+        it draws on top of other units.
+        """
+        super(ZombieUnit, self).activate()
+        BaseUnit.active_units.change_layer(self, ZOMBIE_LAYER)
         
     def valid_move(self, tile, position):
         """
