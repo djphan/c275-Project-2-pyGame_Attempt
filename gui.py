@@ -1,7 +1,7 @@
 import sys 
 import pygame, pygame.locals
 import random
-import maps
+from maps import MAP
 
 # Import various assets and modules for function
 from pygame.sprite import LayeredUpdates
@@ -233,16 +233,18 @@ class GUI(LayeredUpdates):
             # Add/overide for other modules.
             pass
 
-    def load_map(self):
+    def load_map(self, map_file=None):
         """
         Loads the current map. ***
         """
-        for y in range(len(maps.MAP_node1)):
-            for x in range(len(maps.MAP_node1[y])):
+        current_map = MAP()
+        
+        for y in range(len(current_map._map_matrix)):
+            for x in range(len(current_map._map_matrix[y])):
                 location = (x*TILE_DIMENSION+10, y*TILE_DIMENSION+10)
-                tile_key = maps.MAP_node1[y][x]
-                tile_area = maps.TILES[tile_key].area
-                screen.blit(maps.parent_image,location,tile_area)
+                tile_key = current_map._map_matrix[y][x]
+                tile_area = current_map.TILES[tile_key].area
+                screen.blit(current_map.parent_image,location,tile_area)
                 
         pygame.display.flip()
         return
