@@ -289,8 +289,6 @@ class GUI(LayeredUpdates):
         for units in base_unit.UnitBase.active_units:
             self.update_unit_rect(u)
         base_unit.UnitBase.active_units.draw(self.screen)
-        
-
         pass
 
     def load_map(self, node=0):
@@ -323,11 +321,6 @@ class GUI(LayeredUpdates):
     def fog_of_war(self):
         pass
 
-class UnitRender:
-    """
-    This class contains all the functions required to render units
-    onto the GUI. It is grouped together for ease.
-    """
     def def_unit(self, file_name):
         """
         This class reads in a level and determines the unit information for that level

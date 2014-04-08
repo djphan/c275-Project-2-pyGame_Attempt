@@ -32,7 +32,7 @@ class SurvivorUnit(BaseUnit):
         Adds this unit to the active roster. Sets it to a higher layer so that
         it draws on top of other units.
         """
-        super().activate()
+        super(SurviorUnit, self).activate()
         BaseUnit.active_units.change_layer(self, SURVIOR_LAYER)
         
     def is_stoppable(self, tile, pos):

@@ -15,6 +15,7 @@ if __name__ == "__main__":
     main_gui = GUI()
     main_menu = main_gui.init_draw_window('Zombie Survival Board Game')
 
+    # Initalize the map
     main_gui.load_map()
     
     main_menu.add_widget(main_gui.draw_frame('resources'))

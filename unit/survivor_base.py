@@ -11,13 +11,6 @@ class SurvivorUnit(BaseUnit):
     unit 
     """
     def __init__(self, **keywords):
-        #Number of turns worth of remaining fuel.
-        self.max_fuel = 1
-        self._fuel = self.max_fuel
-        
-        # Minimum movement distance
-        self.min_move_distance = 1
-        
         #load the base class
         super(SurviorUnit, self).__init__(**keywords)
         
