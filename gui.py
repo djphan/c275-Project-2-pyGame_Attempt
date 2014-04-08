@@ -25,6 +25,7 @@ HEALTH = ImageLabel ("asset/menu/health.png")
 PEOPLE = ImageLabel ("asset/menu/person.png")
 FOOD = ImageLabel ("asset/menu/soup.png")
 WEAP = ImageLabel ("asset/menu/gun.png")
+PLACEHOLDER = ImageMap ("asset/uk.jpg")
 
 # Set the fonts to render in the GUI
 FEAR_FONT = "asset/menu/FaceYourFears.tft"
@@ -165,7 +166,7 @@ class GUI(LayeredUpdates):
         window.color = BASE_COLOUR
         return window
 
-    def draw_frame(self, menu_object):
+    def draw_frame(self, menu_object,node1=None,node2=None,node3=None):
         """
         Uses OceanGUI frames to partion the game menu into the three components:
         i. Resource header summary
@@ -219,14 +220,24 @@ class GUI(LayeredUpdates):
             mm_table.topleft = 980, 265
             mm_table.spacing = 5
             
-            mm_frame = HFrame (Label ("main"))
+            mm_frame = VFrame (Label ("main"))
             mm_frame.set_boarder = (BORDER_SUNKEN)
                 
             mm_table.add_child (0, 0, mm_frame)
+            text = render_string("Welcome to Urban Zombie", FEAR_FONT, 30)
+            mm_frame.add_child (text)
+            text = render_string("Survival. Stat Text", FEAR_FONT, 30)
+            mm_frame.add_child (text)
+            text = render_string("Render Prototype Here", FEAR_FONT, 30)
+            mm_frame.add_child (text)
+            progress = ProgressBar ()
+            progress.value = 50.0
+            progress.text = "E.g.50.00% Full"
+            progress.sensitive = False
+            mm_frame.add_child (progress)
 
-            for i in xrange(3):
-                btn = Button ("Button %d" % i)
-                mm_frame.add_child (btn)
+
+
             return mm_table    
        
         elif menu_object == 'input':
@@ -240,16 +251,16 @@ class GUI(LayeredUpdates):
             
             inp_table.add_child (0, 0, inp_frame)
             
-            for i in xrange(3):
-                btn = Button ("Node %d" % i)
-                inp_frame.add_child (btn)
+            inp_frame.add_child (node1)
+            inp_frame.add_child (node2)
+            inp_frame.add_child (node3)
                 
             
             return inp_table
 
         elif menu_object == 'minimap':
             minimap_table = Table (1, 1)
-            minimap_table.topleft = 980, 655
+            minimap_table.topleft = 965, 650
             minimap_table.spacing = 5
            
             # Create and display two 'standard' frames.
@@ -261,6 +272,8 @@ class GUI(LayeredUpdates):
             for i in xrange(3):
                 btn = Button ("Button %d" % i)
                 minimap_frame.add_child (btn)
+            minimap_frame.add_child (PLACEHOLDER)
+
             return minimap_table
 
         elif menu_object == 'txtstats':
@@ -274,26 +287,10 @@ class GUI(LayeredUpdates):
                             
             txtstats_table.add_child (0, 0, txtstats_frame)
 
-            for i in xrange(3):
-                btn = Button ("Button %d" % i)
-                txtstats_frame.add_child (btn)
-            return txtstats_table
 
         else:
             # Add/overide for other modules.
             pass
-
-    def load_unit(self):
-        #***
-        """
-        This function draws the unit onto the screen.
-        """
-        for units in base_unit.UnitBase.active_units:
-            self.update_unit_rect(u)
-        base_unit.UnitBase.active_units.draw(self.screen)
-        
-
-        pass
 
     def load_map(self, node=0):
         """
@@ -313,39 +310,23 @@ class GUI(LayeredUpdates):
         pygame.display.flip()
         return
 
-    def load_items(self):
-        pass
-
-    def update(self):
-        pass
-
-    def draw(self):
-        pass
-
-    def fog_of_war(self):
-        pass
-
-class UnitRender:
-    """
-    This class contains all the functions required to render units
-    onto the GUI. It is grouped together for ease.
-    """
-    def def_unit(self, file_name):
+    def def_unit(self, map_file):
         """
         This class reads in a level and determines the unit information for that level
         to render the image. Load in the file_name/path and open it.  
         This was taken from assignment 4 and modified for the units.
         """
         # Open and read the file_name
-        file_name = open(file_name, 'r')
-        line = file_name.readline()
+        maps = open(map_file, 'r')
+        line = maps.readline()
 
         # Move up to the unit definitions
         while line.find("UNITS START") < 0:
-            line = file_name.readline()
+            line = maps.readline()
             if line == "":
                 raise Exception ("Expected unit definitions")
-        line = file_name.readline()
+
+        line = maps.readline()
 
         # Create the units
         while line.find("UNITS END") < 0:
@@ -364,13 +345,35 @@ class UnitRender:
                                                   tiley = unit_y,
                                                   angle = unit_angle,
                                                   activate = True)
-            
-            # Add the unit to the update group and set its display rect
+
             self.update_unit_rect(new_unit)
-            
-            line = map_file.readline()
+
+            line = maps.readline()
             if line == "":
                 raise Exception ("Expected end of unit definitions")
+
+            for units in base_unit.BaseUnit.active_units:
+                self.update_unit_rect(units)
+            base_unit.BaseUnit.active_units.draw(screen)
+
+            pygame.display.flip()
+
+    def update_unit_rect(self, unit):
+        """
+        Scales a unit's display rectangle to screen coordiantes.
+        """
+        # Maps the tile and the GUI positions together to the units.
+        x, y = unit.tilex, unit.tiley
+        screen_x, screen_y = x*TILE_DIMENSION+10, y*TILE_DIMENSION+10
+        unit.rect.x = screen_x
+        unit.rect.y = screen_y
+
+    def load_unit(self):
+        """
+        This function draws the unit onto the screen.
+        """
+
+        pass
 
     def draw_unit(self, active_units):
         """
@@ -378,18 +381,16 @@ class UnitRender:
         """
         for unit in active_units:
             active_units.draw(self.screen)
+    def load_items(self):
+        pass
 
-    def select_unit(self):
-        """
-        This draws a rectangle around our unit when selected.
-        """
+    def update(self):
         pass
 
     def select_target(self):
         """
         This draws the target space that we select.
         """
-
         # If there's a selected unit, outline it
         if self.sel_unit:
             pygame.gfxdraw.rectangle(
@@ -402,14 +403,37 @@ class UnitRender:
             screen_pos = self.map.screen_coords(tile_pos)
             self.draw_reticle(screen_pos)
 
-    def update_unit_rect(self, unit):
+    def select_unit(self):
         """
-        Scales a unit's display rectangle to screen coordiantes.
+        This draws a rectangle around our unit when selected.
         """
-        x, y = unit.tilex, unit.tiley
-        screen_x, screen_y = self.map.screen_coords((x, y))
-        unit.rect.x = screen_x
-        unit.rect.y = screen_y
+        pass
+
+    def update(self):
+        """
+        Update everything in the group.
+        """
+        LayeredUpdates.update(self)
+        
+        # Update units
+        base_unit.BaseUnit.active_units.update()
+        
+        # The unit is finished moving, so go back to select
+        if self.mode == GameStages.Exploration:
+            if (not self.sel_unit) or (not self.sel_unit.is_moving):
+                self.change_mode(Modes.Select)
+                
+        # Update the reticle effect
+        self._reticle.update()
+        
+        # Update effects
+        self._effects.update()
+
+    def draw_reticle(self, pos):
+        """
+        Draws a reticle with its top-left corner at pos.
+        """
+        self.screen.blit(self._reticle.image, pos)
        
 
 

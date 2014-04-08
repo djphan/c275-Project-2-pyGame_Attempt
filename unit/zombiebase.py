@@ -44,8 +44,8 @@ class ZombieUnit(BaseUnit):
          #   or (u and u.team != self.team and isinstance(u, unit.survivor_base.SurvivorUnit)):
           #  return False
         
-        #Unit can't travel through these default tile sets.
-        if (tile.type in {'wl', 'f1', 'wr', 'f2', 'bc'}):
+        # Unit can't travel through these default tile sets.
+        if (TILES.type in {'wl', 'f1', 'wr', 'f2', 'bc'}):
             return False
 
         return True

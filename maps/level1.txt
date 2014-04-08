@@ -11,5 +11,10 @@ maps/level1/level1_node3.txt
 MAPS END
 
 UNITS START
-BasicZombie 1 2 2 180
+BasicZombie 1 10 12 0
+BasicZombie 1 10 13 0
+BasicZombie 1 11 12 0
+BasicZombie 1 11 13 0
+BasicZombie 1 12 12 0
+BasicZombie 1 12 13 0
 UNITS END

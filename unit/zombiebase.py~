@@ -28,7 +28,7 @@ class ZombieUnit(BaseUnit):
         Adds this unit to the active roster. Sets it to a higher layer so that
         it draws on top of other units.
         """
-        super().activate()
+        super(ZombieUnit, self).activate()
         BaseUnit.active_units.change_layer(self, ZOMBIE_LAYER)
         
     def valid_move(self, tile, position):
@@ -45,7 +45,7 @@ class ZombieUnit(BaseUnit):
           #  return False
         
         #Unit can't travel through these default tile sets.
-        if (tile.type in {'wl', 'f1', 'wr', 'f2', 'bc'}):
+        if (TILES.type in {'wl', 'f1', 'wr', 'f2', 'bc'}):
             return False
 
         return True
