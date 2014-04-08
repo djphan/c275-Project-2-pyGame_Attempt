@@ -1,4 +1,4 @@
-from oceangui.events import EventManager
+from oceangui.events import EventManager, INotifyable
 
 class ZombieAttack (INotifyable):
     def set_unit(self, unit, x_coord, y_coord):

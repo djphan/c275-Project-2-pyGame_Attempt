@@ -55,6 +55,8 @@ From Assignment 4 the following modules were taken and modified:
 
 The 'Face Your Fears' font file was used for in game rendering:
     http://www.urbanfonts.com/fonts/scary-fonts_page-1.htm
+    
+The tiles.png file was taken from the dungeon scroller Deadly Sin.
 
 
 ------------------------------------------------------------------------------------

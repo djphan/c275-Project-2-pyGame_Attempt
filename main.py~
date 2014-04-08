@@ -15,12 +15,12 @@ if __name__ == "__main__":
     main_gui = GUI()
     main_menu = main_gui.init_draw_window('Zombie Survival Board Game')
 
-    main_gui.load_map(2)
+    main_gui.load_map()
     
-    main_menu.add_widget(main_gui.draw_frame('resources'))
-    main_menu.add_widget(main_gui.draw_frame('main_menu'))
-    main_menu.add_widget(main_gui.draw_frame('minimap'))
-    main_menu.add_widget(main_gui.draw_frame('input'))
+    RESOURCES = main_menu.add_widget(main_gui.draw_frame('resources'))
+    MAIN_MENU = main_menu.add_widget(main_gui.draw_frame('main_menu'))
+    MINIMAP = main_menu.add_widget(main_gui.draw_frame('minimap'))
+    INPUT = main_menu.add_widget(main_gui.draw_frame('input'))
 
     main_menu.start ()
 
@@ -40,6 +40,7 @@ if __name__ == "__main__":
             elif event.type == pygame.MOUSEBUTTONUP:
                 main_gui.on_click(event)
         clock.tick(60)
+        #if RESOURCES[0]._signals[SIG_MOUSEDOWN] == 
 
 
 

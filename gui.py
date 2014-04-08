@@ -239,10 +239,12 @@ class GUI(LayeredUpdates):
             inp_frame.set_boarder = (BORDER_SUNKEN)
             
             inp_table.add_child (0, 0, inp_frame)
-
+            
             for i in xrange(3):
-                btn = Button ("Button %d" % i)
+                btn = Button ("Node %d" % i)
                 inp_frame.add_child (btn)
+                
+            
             return inp_table
 
         elif menu_object == 'minimap':
@@ -255,7 +257,7 @@ class GUI(LayeredUpdates):
             minimap_frame.set_boarder = (BORDER_SUNKEN)
                             
             minimap_table.add_child (0, 0, minimap_frame)
-
+            
             for i in xrange(3):
                 btn = Button ("Button %d" % i)
                 minimap_frame.add_child (btn)

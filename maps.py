@@ -43,7 +43,8 @@ class MAP(Sprite):
     def load_lvl_file(self, level_file):
         """
         Opens maps/level_.txt for specified level and stores number of nodes 
-        and a list of their associated matrix files
+        and a list of their associated matrix files.
+        Reworked from Assignment 4.
         """
         lvl_file = open(level_file, 'r')
         # Move up to the line with the Nodes Count
@@ -119,7 +120,6 @@ class MAP(Sprite):
         
     def __init__(self, level_file, tile_width=TILE_DIMENSION, tile_height=TILE_DIMENSION, map_width=MAP_WIDTH, map_height=MAP_HEIGHT):
         # Set up map info
-        #self._sprite_sheet = pygame.image.load('/asset/tiles.png')
         self._tile_width = tile_width
         self._tile_height = tile_height
         self._map_width = map_width
