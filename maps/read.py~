@@ -1,0 +1,15 @@
+def load_mapfile(map_file):
+    
+    matrix = [[] for i in range(20)]
+    print(matrix)
+    sfile = open(map_file, 'r')
+    # Move up to the line with the Nodes Count
+    line = sfile.readline()
+    for y in range(30):
+        line = line.rstrip()
+        line = line.split()
+        for x in range(20):
+            matrix[y].append = line[x]
+        line = sfile.readline()
+    print(matrix)
+    return matrix

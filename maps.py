@@ -79,7 +79,7 @@ class MAP(Sprite):
         """
         Load mapfile by indexing to specific node within self._nodes list.
         
-        load_mapfile(level1_node1) outputs this...
+        load_mapfile(level_test) outputs this...
         
         matrix = [['wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gs','gs','gs','gs','gs','wl'],\
                      ['wl','ws','gb','gb','dt','dt','dt','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gb','gs','gs','gs','gs','gs','wl'],\
@@ -126,8 +126,7 @@ class MAP(Sprite):
         self._map_height = map_height
         self._node_count = None
         self._nodes = self.load_lvl_file(level_file)
-        self._map_matrix = self.load_mapfile(node=0)
-        self._highlights = {}
+        self._map_matrix = None
         
         Sprite.__init__(self)
         
