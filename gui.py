@@ -52,6 +52,34 @@ TEAM_NAME = {
     2: "neutral"
 }
 
+
+"""
+        # Create the units
+        while line.find("UNITS END") < 0:
+            line = line.rstrip()
+            line = line.split(' ')
+            unit_name = line[0]
+            unit_team = int(line[1])
+            unit_x, unit_y = int(line[2]), int(line[3])
+            unit_angle = int(line[4])
+            
+            if not unit_name in unit.unit_types:
+                raise Exception("No unit of name {} found!".format(unit_name))
+            new_unit = unit.unit_types[unit_name](team = unit_team,
+                                                  tile_x = unit_x,
+                                                  tile_y = unit_y,
+                                                  activate = True,
+                                                  angle = unit_angle)
+            
+            # Add the unit to the update group and set its display rect
+            self.update_unit_rect(new_unit)
+            
+            line = map_file.readline()
+            if line == "":
+                raise Exception ("Expected end of unit definitions")
+
+"""
+
 def render_string(string, font, size):
     """
     This is a helper function to render strings as an image widget
@@ -60,6 +88,56 @@ def render_string(string, font, size):
     text = String.draw_string(string, font, size, 1, (0,0,0))
     text = ImageLabel(text)
     return text
+
+class GameStage:
+    """
+    Defined game phases taken from the resource in assignment 4:
+    http://stackoverflow.com/questions/702834/whats-the-common-practice-
+    for-enums-in-python
+    """
+    Exploration, Event, Combat, Sneak, GameOver = range(5)
+
+class UnitRender:
+    """
+    This class contains all the functions required to render units
+    onto the GUI. It is grouped together for ease.
+    """
+    def def_unit(self, file_name):
+        """
+        This class reads in a level and determines the unit information for that level
+        to render the image.
+        """
+        pass
+
+    def draw_unit(self, active_units):
+        """
+        This draws in the unit onto the screen for us.
+        """
+        for unit in active_units:
+            active_units.draw.(self.screen)
+
+    def select_unit(self):
+        """
+        This draws a rectangle around our unit when selected.
+        """
+        pass
+
+    def select_target(self):
+        """
+        This draws the target space that we select.
+        """
+
+        # If there's a selected unit, outline it
+        if self.sel_unit:
+            pygame.gfxdraw.rectangle(
+                self.screen,
+                self.sel_unit.rect,
+                SELECT_COLOR)
+                
+        # Mark potential targets
+        for tile_pos in self._attackable_tiles:
+            screen_pos = self.map.screen_coords(tile_pos)
+            self.draw_reticle(screen_pos)
 
 class GUI(LayeredUpdates):
     """
@@ -72,7 +150,43 @@ class GUI(LayeredUpdates):
     """
     # Number of GUI instances
     instance_num = 0
+
+    def __init__(self):
+        # Initalizes layered updates in the GUI to render all the images properly
+        LayeredUpdates.__init__(self)
+
+        # Error checking if you attempt to load multiple GUIs at once
+        if GUI.instance_num != 0:
+            raise Exception("Can only have one Zombie Survival Game up at a time.")
+        GUI.instance_num = 1
 	
+        # Game properties selected by the GUI in reference to the game levels
+        self.sel_level = None
+        self.sel_unit = None 
+        self.sel_tile = None 
+        self.sel_event = None
+        self.sel_gamestate = GameStage.Exploration  
+
+    def select_mode(self, mode):
+        """
+        Using the predefined GameStates we will use this helper function to assist us 
+        in setting the current game stage.
+        """
+        if self.gamestate == mode:
+            return
+        
+        # Deal with the current mode
+        if self.mode == GameStage.Exploration:
+            # Add selection tile.
+            pass
+        
+        # Deal with the current mode
+        if self.mode == GameStage.Event:
+            # Add selection tile.
+            pass
+            
+        self.mode = mode
+       
     # Think about placeholders for the unit actions for the other options.
     def can_move(self):
         """
@@ -233,6 +347,16 @@ class GUI(LayeredUpdates):
             # Add/overide for other modules.
             pass
 
+    def load_unit(self):
+        #***
+        """
+        This function draws the unit onto the screen.
+        """
+        for units in base_unit.UnitBase.active_units:
+            self.update_unit_rect(u)
+        base_unit.UnitBase.active_units.draw(self.screen)
+
+
     def load_map(self):
         """
         Loads the current map. ***
@@ -247,14 +371,7 @@ class GUI(LayeredUpdates):
         pygame.display.flip()
         return
 
-    def load_unit(self):
-        #***
-        """
-        This function draws the unit onto the screen.
-        """
-        for units in base_unit.UnitBase.active_units:
-            self.update_unit_rect(u)
-        base_unit.UnitBase.active_units.draw(self.screen)
+
 
     def load_items(self):
         pass

@@ -34,13 +34,8 @@ TILES = {
 class MAP(LayeredUpdates):
     pass
 
-
 def map_matrix(filename):
     pass
-
-
-
-
 
 # Matrix mapping tiles to background.
 MAP_node1 = [['wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','wl','gs','gs','gs','gs','gs','wl'],\
